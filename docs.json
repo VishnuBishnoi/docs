@@ -36,6 +36,7 @@
             "group": "API Reference",
             "pages": [
               "ios/api-reference/overview",
+              "ios/api-reference/modules",
               "ios/api-reference/functions",
               "ios/api-reference/classes"
             ]

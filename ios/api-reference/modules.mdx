@@ -1,0 +1,168 @@
+---
+title: "SDK Modules"
+description: "Complete module documentation for iOS SDK"
+icon: "layer-group"
+---
+
+# iOS SDK Modules
+
+The Joyfill iOS SDK consists of four interconnected modules, each serving a specific purpose.
+
+## 🎨 Joyfill (UI Library)
+
+The main SwiftUI framework for rendering and interacting with forms.
+
+### Key Features
+- Document rendering with SwiftUI views
+- Interactive form components
+- Customizable UI elements
+- Platform: iOS 15.0+
+
+<Card 
+  title="View Joyfill Module Documentation →" 
+  href="/ios-api-reference/Joyfill/documentation/joyfill/index.html"
+  icon="arrow-right"
+>
+  Explore complete API documentation for the UI library
+</Card>
+
+### Key Types
+- `JoyfillFormView` - Main form container view
+- `JoyfillConfig` - Configuration object
+- `JoyfillDelegate` - Event handling protocol
+
+---
+
+## 📦 JoyfillModel
+
+Core data models and JSON schema structures for forms and documents.
+
+### Key Features
+- Document data structures
+- Field models and types
+- JSON encoding/decoding
+- Schema validation
+- Platform: iOS 15.0+
+
+<Card 
+  title="View JoyfillModel Documentation →" 
+  href="/ios-api-reference/JoyfillModel/documentation/joyfillmodel/index.html"
+  icon="arrow-right"
+>
+  Explore complete data model documentation
+</Card>
+
+### Key Types
+- `JoyDoc` - Main document structure
+- `FieldElement` - Form field representation
+- `FileElement` - File/page structure
+- `DisplayJoyDoc` - Render-ready document
+
+---
+
+## 🧮 JoyfillFormulas
+
+Formula evaluation engine for computed fields and expressions.
+
+### Key Features
+- Expression parser
+- Formula evaluator
+- Built-in functions (math, date, string)
+- Custom function registration
+- Platform: iOS 15.0+
+
+<Card 
+  title="View JoyfillFormulas Documentation →" 
+  href="/ios-api-reference/JoyfillFormulas/documentation/joyfillformulas/index.html"
+  icon="arrow-right"
+>
+  Explore formula engine documentation
+</Card>
+
+### Key Types
+- `FormulaParser` - Parse formula expressions
+- `Evaluator` - Execute formulas
+- `FunctionRegistry` - Manage custom functions
+- `FormulaError` - Error handling
+
+---
+
+## ☁️ JoyfillAPIService
+
+Network layer for communicating with Joyfill backend services.
+
+### Key Features
+- API client for document operations
+- Authentication handling
+- Request/response models
+- Error handling
+- Platform: iOS 15.0+
+
+<Card 
+  title="View JoyfillAPIService Documentation →" 
+  href="/ios-api-reference/JoyfillAPIService/documentation/joyfillapiservice/index.html"
+  icon="arrow-right"
+>
+  Explore API service documentation
+</Card>
+
+### Key Types
+- `JoyfillAPIClient` - Main API client
+- `APIRequest` - Request builder
+- `APIResponse` - Response types
+- `APIError` - Error handling
+
+---
+
+## 🔧 Platform Requirements
+
+All modules share these requirements:
+
+- **Minimum iOS**: 15.0+
+- **Swift Version**: 5.9+
+- **Xcode**: 15.0+
+- **Platform**: iOS only (iPhone, iPad)
+
+## 📖 Documentation Format
+
+The module documentation is generated using Apple's DocC tool, providing:
+
+- ✅ Interactive API browser
+- ✅ Code examples
+- ✅ Type relationships
+- ✅ Protocol conformances
+- ✅ Extension documentation
+- ✅ Search functionality
+
+## 🔗 Cross-Module Dependencies
+
+```
+┌─────────────────┐
+│    Joyfill      │  (UI Layer)
+│   (SwiftUI)     │
+└────────┬────────┘
+         │
+         ├─► JoyfillModel      (Data Layer)
+         │
+         ├─► JoyfillFormulas   (Computation Layer)
+         │
+         └─► JoyfillAPIService (Network Layer)
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Full API Reference" icon="book-open" href="/ios-api-reference/index.html">
+    Browse all modules in one place
+  </Card>
+  <Card title="Getting Started" icon="rocket" href="/ios/getting-started/quickstart">
+    Start building with the SDK
+  </Card>
+  <Card title="Guides" icon="map" href="/ios/guides/modes">
+    Learn advanced techniques
+  </Card>
+  <Card title="Examples" icon="code" href="/ios/api-reference/functions">
+    View code examples
+  </Card>
+</CardGroup>
+
