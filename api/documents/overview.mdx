@@ -1,0 +1,136 @@
+---
+title: "Documents Overview"
+description: "Manage form documents via the Joyfill API"
+icon: "file"
+---
+
+# Documents API
+
+Documents are instances of forms that users fill out. The Documents API allows you to create, retrieve, update, and delete documents programmatically.
+
+## What is a Document?
+
+A document is a filled-out form that contains:
+- **Fields**: User-entered data
+- **Files**: Attachments and images
+- **Metadata**: Creation date, status, ownership info
+- **Template Reference**: Link to the original form template
+
+## Document States
+
+| State | Description |
+|-------|-------------|
+| `draft` | Document is being edited |
+| `submitted` | Document has been submitted |
+| `completed` | Document processing is complete |
+| `archived` | Document is archived |
+
+## Available Operations
+
+<CardGroup cols={2}>
+  <Card title="Create Document" icon="plus" href="/api/documents/create">
+    Create a new document from template or raw data
+  </Card>
+  <Card title="Bulk Create" icon="layer-group" href="/api/documents/bulk-create">
+    Create multiple documents at once
+  </Card>
+  <Card title="Retrieve Document" icon="file" href="/api/documents/retrieve">
+    Get a specific document by ID
+  </Card>
+  <Card title="List Documents" icon="list" href="/api/documents/list">
+    List all documents with filtering
+  </Card>
+  <Card title="Update Document" icon="pen-to-square" href="/api/documents/update">
+    Update document data and fields
+  </Card>
+  <Card title="Delete Document" icon="trash" href="/api/documents/delete">
+    Delete a document permanently
+  </Card>
+</CardGroup>
+
+## Document Object
+
+```json
+{
+  "_id": "doc_abc123",
+  "name": "Customer Onboarding Form",
+  "type": "form",
+  "stage": "submitted",
+  "group": "grp_xyz789",
+  "template": "tmpl_def456",
+  "createdOn": "2025-01-15T10:30:00.000Z",
+  "deleted": false,
+  "files": [
+    {
+      "id": "file_1",
+      "name": "Page 1",
+      "url": "https://..."
+    }
+  ],
+  "fields": [
+    {
+      "id": "field_1",
+      "type": "text",
+      "title": "Full Name",
+      "value": "John Doe"
+    }
+  ]
+}
+```
+
+## Common Use Cases
+
+### Creating Documents
+
+There are two main strategies for creating documents:
+
+1. **From Template** - Use a template ID to generate a new document
+2. **Raw Document** - Pass custom `files` and `fields` directly
+
+Learn more: [Create a Document](/api/documents/create)
+
+### Batch Processing
+
+Use bulk operations to efficiently process multiple documents:
+
+```bash
+POST /v1/documents/bulk
+```
+
+Learn more: [Bulk Create Documents](/api/documents/bulk-create)
+
+### Document Search
+
+Search and filter documents by various criteria:
+
+```bash
+POST /v1/documents/search
+```
+
+## Field Types
+
+Documents support various field types:
+
+| Type | Description | Example Value |
+|------|-------------|---------------|
+| `text` | Single-line text | "John Doe" |
+| `textarea` | Multi-line text | "Long description..." |
+| `number` | Numeric value | 42 |
+| `email` | Email address | "user@example.com" |
+| `date` | Date value | "2025-01-15" |
+| `dropdown` | Selection | "option_1" |
+| `checkbox` | Boolean | true |
+| `signature` | Signature data | "data:image/png..." |
+| `image` | Image upload | "https://..." |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create Your First Document" icon="rocket" href="/api/documents/create">
+    Get started with the Documents API
+  </Card>
+  <Card title="Templates API" icon="layer-group" href="/api/templates/overview">
+    Learn about form templates
+  </Card>
+</CardGroup>
+

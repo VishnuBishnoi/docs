@@ -1,0 +1,45 @@
+---
+title: "Retrieve a Document"
+description: "Get a specific document by ID"
+api: "GET https://api-joy.joyfill.io/v1/documents/:id"
+---
+
+# Retrieve a Document
+
+Get details of a specific document by its ID.
+
+## Endpoint
+
+```
+GET https://api-joy.joyfill.io/v1/documents/:id
+```
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The document ID to retrieve
+</ParamField>
+
+## Example Request
+
+```bash
+curl https://api-joy.joyfill.io/v1/documents/doc_abc123 \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+## Response (200 OK)
+
+```json
+{
+  "_id": "doc_abc123",
+  "name": "Customer Onboarding",
+  "type": "form",
+  "stage": "submitted",
+  "group": "grp_xyz789",
+  "template": "tmpl_def456",
+  "createdOn": "2025-01-15T10:30:00.000Z",
+  "files": [...],
+  "fields": [...]
+}
+```
+

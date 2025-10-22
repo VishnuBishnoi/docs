@@ -1,0 +1,55 @@
+---
+title: "Update a Document"
+description: "Update an existing document"
+api: "POST https://api-joy.joyfill.io/v1/documents/:id"
+---
+
+# Update a Document
+
+Update field values, metadata, or stage of an existing document.
+
+## Endpoint
+
+```
+POST https://api-joy.joyfill.io/v1/documents/:id
+```
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The document ID to update
+</ParamField>
+
+## Request Body
+
+```json
+{
+  "name": "Updated Document Name",
+  "stage": "submitted",
+  "fields": [
+    {
+      "id": "field_name",
+      "value": "John Doe"
+    }
+  ]
+}
+```
+
+## Example
+
+```bash
+curl -X POST https://api-joy.joyfill.io/v1/documents/doc_abc123 \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "stage": "submitted",
+    "fields": [
+      {"id": "field_email", "value": "john@example.com"}
+    ]
+  }'
+```
+
+## Response (200 OK)
+
+Returns the updated document object.
+

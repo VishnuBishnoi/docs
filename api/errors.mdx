@@ -1,0 +1,288 @@
+---
+title: "Error Handling"
+description: "Understand API errors and how to handle them"
+icon: "triangle-exclamation"
+---
+
+# Error Handling
+
+The Joyfill API uses standard HTTP status codes and returns detailed error messages in JSON format.
+
+## HTTP Status Codes
+
+| Code | Status | Description |
+|------|--------|-------------|
+| 200 | OK | Request successful |
+| 201 | Created | Resource created successfully |
+| 204 | No Content | Request successful, no content returned |
+| 400 | Bad Request | Invalid request parameters |
+| 401 | Unauthorized | Missing or invalid authentication |
+| 403 | Forbidden | Insufficient permissions |
+| 404 | Not Found | Resource doesn't exist |
+| 422 | Unprocessable Entity | Validation error |
+| 429 | Too Many Requests | Rate limit exceeded |
+| 500 | Internal Server Error | Server error |
+| 503 | Service Unavailable | Service temporarily unavailable |
+
+## Error Response Format
+
+All errors return a JSON object with the following structure:
+
+```json
+{
+  "error": {
+    "code": "error_code",
+    "message": "Human-readable error message",
+    "details": {
+      "field": "Additional context about the error"
+    }
+  }
+}
+```
+
+## Common Errors
+
+### 400 Bad Request
+
+Invalid request parameters or malformed JSON:
+
+```json
+{
+  "error": {
+    "code": "bad_request",
+    "message": "Invalid request body",
+    "details": {
+      "field": "name",
+      "issue": "Field is required"
+    }
+  }
+}
+```
+
+### 401 Unauthorized
+
+Missing or invalid authentication token:
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "Invalid or missing authentication token"
+  }
+}
+```
+
+### 404 Not Found
+
+Resource doesn't exist:
+
+```json
+{
+  "error": {
+    "code": "not_found",
+    "message": "Document not found",
+    "details": {
+      "document_id": "doc_123"
+    }
+  }
+}
+```
+
+### 422 Validation Error
+
+Request validation failed:
+
+```json
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Validation failed",
+    "details": {
+      "fields": [
+        {
+          "field": "email",
+          "message": "Invalid email format"
+        },
+        {
+          "field": "name",
+          "message": "Name is required"
+        }
+      ]
+    }
+  }
+}
+```
+
+### 429 Rate Limit Exceeded
+
+Too many requests:
+
+```json
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Rate limit exceeded. Try again in 60 seconds.",
+    "details": {
+      "retry_after": 60,
+      "limit": 1000,
+      "window": "1 hour"
+    }
+  }
+}
+```
+
+## Handling Errors
+
+### Best Practices
+
+<AccordionGroup>
+  <Accordion title="Always Check Status Codes">
+    Check the HTTP status code before parsing the response body.
+  </Accordion>
+  
+  <Accordion title="Log Error Details">
+    Log the complete error response for debugging, but never expose sensitive details to end users.
+  </Accordion>
+  
+  <Accordion title="Implement Retry Logic">
+    Retry failed requests with exponential backoff for transient errors (5xx status codes).
+  </Accordion>
+  
+  <Accordion title="Handle Rate Limits">
+    Respect rate limits and implement proper backoff strategies.
+  </Accordion>
+</AccordionGroup>
+
+### Example Error Handling
+
+<CodeGroup>
+
+```javascript Node.js
+try {
+  const response = await client.post('/documents', documentData);
+  return response.data;
+} catch (error) {
+  if (error.response) {
+    // Server responded with error
+    const { status, data } = error.response;
+    
+    switch (status) {
+      case 400:
+        console.error('Bad request:', data.error.message);
+        break;
+      case 401:
+        console.error('Unauthorized. Check your API token.');
+        break;
+      case 404:
+        console.error('Resource not found:', data.error.details);
+        break;
+      case 429:
+        const retryAfter = data.error.details.retry_after;
+        console.log(`Rate limited. Retry after ${retryAfter} seconds`);
+        break;
+      case 500:
+        console.error('Server error. Please try again later.');
+        break;
+      default:
+        console.error('Error:', data.error.message);
+    }
+  } else if (error.request) {
+    // Request made but no response
+    console.error('No response from server');
+  } else {
+    // Error setting up request
+    console.error('Error:', error.message);
+  }
+}
+```
+
+```python Python
+import time
+import requests
+from requests.exceptions import RequestException
+
+def make_api_request(url, data):
+    max_retries = 3
+    retry_delay = 1
+    
+    for attempt in range(max_retries):
+        try:
+            response = requests.post(url, json=data, headers=headers)
+            response.raise_for_status()
+            return response.json()
+            
+        except requests.exceptions.HTTPError as e:
+            status_code = e.response.status_code
+            error_data = e.response.json()
+            
+            if status_code == 429:
+                retry_after = error_data['error']['details']['retry_after']
+                print(f"Rate limited. Waiting {retry_after} seconds...")
+                time.sleep(retry_after)
+                continue
+                
+            elif status_code >= 500:
+                if attempt < max_retries - 1:
+                    print(f"Server error. Retrying in {retry_delay} seconds...")
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+                    continue
+                else:
+                    raise
+            else:
+                print(f"Error {status_code}: {error_data['error']['message']}")
+                raise
+                
+        except RequestException as e:
+            print(f"Request failed: {str(e)}")
+            raise
+```
+
+</CodeGroup>
+
+## Retry Strategy
+
+Implement exponential backoff for retrying failed requests:
+
+```javascript
+async function retryWithBackoff(fn, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      const status = error.response?.status;
+      
+      // Don't retry client errors (4xx except 429)
+      if (status >= 400 && status < 500 && status !== 429) {
+        throw error;
+      }
+      
+      // Last attempt
+      if (i === maxRetries - 1) {
+        throw error;
+      }
+      
+      // Wait before retry (exponential backoff)
+      const delay = Math.min(1000 * Math.pow(2, i), 10000);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
+// Usage
+const document = await retryWithBackoff(() => 
+  client.post('/documents', documentData)
+);
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn about API authentication
+  </Card>
+  <Card title="Create Document" icon="file-plus" href="/api/documents/create">
+    Start making API calls
+  </Card>
+</CardGroup>
+

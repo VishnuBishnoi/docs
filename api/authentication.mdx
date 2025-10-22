@@ -1,0 +1,226 @@
+---
+title: "Authentication"
+description: "Authenticate your API requests with Joyfill"
+icon: "key"
+---
+
+# Authentication
+
+The Joyfill API uses Bearer token authentication to secure all API requests.
+
+## Getting Your Access Token
+
+1. **Sign up** at [joyfill.io](https://joyfill.io)
+2. **Navigate** to Settings → API Access
+3. **Generate** a new access token
+4. **Copy** and store it securely
+
+<Warning>
+  Keep your access tokens secure! Never commit them to version control or expose them in client-side code.
+</Warning>
+
+## Using Your Access Token
+
+Include your access token in the `Authorization` header of every API request:
+
+```bash
+curl https://api-joy.joyfill.io/v1/documents \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+## Language Examples
+
+<CodeGroup>
+
+```bash cURL
+curl https://api-joy.joyfill.io/v1/documents \
+  -H "Authorization: Bearer sk_live_abc123xyz456"
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+const client = axios.create({
+  baseURL: 'https://api-joy.joyfill.io/v1',
+  headers: {
+    'Authorization': 'Bearer sk_live_abc123xyz456',
+    'Content-Type': 'application/json'
+  }
+});
+
+// Make requests
+const response = await client.get('/documents');
+```
+
+```python Python
+import requests
+
+headers = {
+    'Authorization': 'Bearer sk_live_abc123xyz456',
+    'Content-Type': 'application/json'
+}
+
+response = requests.get(
+    'https://api-joy.joyfill.io/v1/documents',
+    headers=headers
+)
+```
+
+```ruby Ruby
+require 'net/http'
+require 'json'
+
+uri = URI('https://api-joy.joyfill.io/v1/documents')
+
+request = Net::HTTP::Get.new(uri)
+request['Authorization'] = 'Bearer sk_live_abc123xyz456'
+request['Content-Type'] = 'application/json'
+
+response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+  http.request(request)
+end
+```
+
+```php PHP
+<?php
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, 'https://api-joy.joyfill.io/v1/documents');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer sk_live_abc123xyz456',
+    'Content-Type: application/json'
+]);
+
+$response = curl_exec($ch);
+curl_close($ch);
+?>
+```
+
+</CodeGroup>
+
+## Token Types
+
+| Token Type | Prefix | Use Case |
+|-----------|--------|----------|
+| **Live** | `sk_live_` | Production environment |
+| **Test** | `sk_test_` | Development and testing |
+| **User** | `usr_token_` | User-specific access |
+
+<Tip>
+  Use test tokens during development to avoid affecting production data.
+</Tip>
+
+## Security Best Practices
+
+### ✅ Do
+
+- Store tokens in environment variables
+- Use different tokens for development and production
+- Rotate tokens regularly
+- Revoke tokens immediately if compromised
+- Use server-side API calls only
+
+### ❌ Don't
+
+- Commit tokens to version control
+- Expose tokens in client-side code
+- Share tokens via email or chat
+- Use the same token across multiple applications
+- Hard-code tokens in your application
+
+## Managing Tokens
+
+### Creating a New Token
+
+1. Go to Dashboard → Settings → API Access
+2. Click "Generate New Token"
+3. Add a description (e.g., "Production Server")
+4. Copy the token immediately (it won't be shown again)
+
+### Rotating Tokens
+
+When rotating tokens:
+
+1. Generate a new token
+2. Update your application with the new token
+3. Test thoroughly
+4. Revoke the old token
+
+### Revoking Tokens
+
+Revoke a token immediately if:
+- It's been compromised
+- You no longer need it
+- An employee with access leaves
+- You're rotating tokens
+
+## Environment Variables
+
+Store your tokens securely using environment variables:
+
+<CodeGroup>
+
+```bash .env
+JOYFILL_API_TOKEN=sk_live_abc123xyz456
+JOYFILL_API_URL=https://api-joy.joyfill.io/v1
+```
+
+```javascript Node.js
+require('dotenv').config();
+
+const apiToken = process.env.JOYFILL_API_TOKEN;
+const apiUrl = process.env.JOYFILL_API_URL;
+```
+
+```python Python
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_token = os.getenv('JOYFILL_API_TOKEN')
+api_url = os.getenv('JOYFILL_API_URL')
+```
+
+</CodeGroup>
+
+## Error Responses
+
+### 401 Unauthorized
+
+Token is missing or invalid:
+
+```json
+{
+  "error": {
+    "code": "unauthorized",
+    "message": "Invalid or missing authentication token"
+  }
+}
+```
+
+### 403 Forbidden
+
+Token is valid but lacks required permissions:
+
+```json
+{
+  "error": {
+    "code": "forbidden",
+    "message": "Insufficient permissions for this resource"
+  }
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create Document" icon="file-plus" href="/api/documents/create">
+    Make your first authenticated API call
+  </Card>
+  <Card title="Error Handling" icon="triangle-exclamation" href="/api/errors">
+    Learn about error responses
+  </Card>
+</CardGroup>
+

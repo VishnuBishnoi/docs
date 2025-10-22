@@ -1,0 +1,128 @@
+---
+title: "REST API Introduction"
+description: "Build integrations with the Joyfill REST API"
+icon: "code"
+---
+
+# Joyfill REST API
+
+The Joyfill REST API enables you to programmatically manage documents, templates, users, and groups. Build powerful integrations to automate your form workflows.
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api-joy.joyfill.io/v1
+```
+
+## API Versions
+
+| Version | Status | Notes |
+|---------|--------|-------|
+| v1.1 | Current | Latest stable version |
+| v1.0 | Supported | Legacy version |
+
+<Note>
+  This documentation covers v1.1 of the Joyfill API. For v1.0 documentation, visit [docs.joyfill.io](https://docs.joyfill.io).
+</Note>
+
+## Quick Start
+
+<Steps>
+  <Step title="Get API Credentials">
+    Sign up at [joyfill.io](https://joyfill.io) and get your API access token from the dashboard.
+  </Step>
+  
+  <Step title="Make Your First Request">
+    Test your credentials with a simple API call:
+    ```bash
+    curl https://api-joy.joyfill.io/v1/documents \
+      -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+    ```
+  </Step>
+  
+  <Step title="Explore Endpoints">
+    Browse our comprehensive API reference to discover all available endpoints.
+  </Step>
+</Steps>
+
+## Core Concepts
+
+### Documents
+
+Documents are instances of forms filled out by users. Each document can be in different states (draft, submitted, completed) and contains field values.
+
+### Templates
+
+Templates define the structure and fields of your forms. Create documents from templates to maintain consistency across your forms.
+
+### Groups
+
+Groups organize documents and control access permissions. Use groups to manage different projects or teams.
+
+### Users
+
+Users can create, edit, and view documents based on their permissions. Manage user access through the API.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="RESTful Design" icon="diagram-project">
+    Standard HTTP methods and status codes
+  </Card>
+  <Card title="JSON Format" icon="brackets-curly">
+    All requests and responses use JSON
+  </Card>
+  <Card title="Comprehensive" icon="list-check">
+    Full CRUD operations for all resources
+  </Card>
+  <Card title="Secure" icon="shield-check">
+    Bearer token authentication
+  </Card>
+</CardGroup>
+
+## Authentication
+
+All API requests require authentication using a Bearer token in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
+
+Learn more in the [Authentication](/api/authentication) guide.
+
+## Rate Limits
+
+- **Standard**: 1000 requests per hour
+- **Enterprise**: Custom limits available
+
+<Tip>
+  Contact support@joyfill.io for increased rate limits or enterprise pricing.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api/authentication">
+    Learn how to authenticate your requests
+  </Card>
+  <Card title="Create Document" icon="file-plus" href="/api/documents/create">
+    Create your first document via API
+  </Card>
+  <Card title="Error Handling" icon="triangle-exclamation" href="/api/errors">
+    Understand API errors and responses
+  </Card>
+  <Card title="Templates API" icon="layer-group" href="/api/templates/overview">
+    Manage form templates
+  </Card>
+</CardGroup>
+
+## Support
+
+Need help? We're here for you:
+
+- 📧 Email: support@joyfill.io
+- 📚 Full Documentation: [docs.joyfill.io](https://docs.joyfill.io)
+- 💬 Community: [GitHub Discussions](https://github.com/joyfill/discussions)
+

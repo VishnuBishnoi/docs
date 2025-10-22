@@ -1,0 +1,48 @@
+---
+title: "Delete a Document"
+description: "Permanently delete a document"
+api: "DELETE https://api-joy.joyfill.io/v1/documents/:id"
+---
+
+# Delete a Document
+
+Permanently delete a document from the system.
+
+## Endpoint
+
+```
+DELETE https://api-joy.joyfill.io/v1/documents/:id
+```
+
+## Path Parameters
+
+<ParamField path="id" type="string" required>
+  The document ID to delete
+</ParamField>
+
+## Example Request
+
+```bash
+curl -X DELETE https://api-joy.joyfill.io/v1/documents/doc_abc123 \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+## Response (204 No Content)
+
+No content is returned on successful deletion.
+
+<Warning>
+  This action is permanent and cannot be undone. Consider archiving documents instead of deleting them if you might need them later.
+</Warning>
+
+## Soft Delete Alternative
+
+To archive instead of delete:
+
+```bash
+curl -X POST https://api-joy.joyfill.io/v1/documents/doc_abc123 \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"stage": "archived"}'
+```
+

@@ -16,11 +16,11 @@ description: "Embeddable form builder SDKs for every platform"
 
 # Developer Documentation
 
-Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms into your applications across iOS, Android, React Native, and Web platforms.
+Build powerful, customizable form experiences with Joyfill. Integrate forms into your applications across iOS, Android, React Native, Web, or use our REST API for custom integrations.
 
-## Choose Your SDK
+## Choose Your Platform
 
-<CardGroup cols={2}>
+<CardGroup cols={3}>
   <Card
     title="iOS SDK"
     icon="apple"
@@ -53,6 +53,14 @@ Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms
   >
     Embed forms in any web application
   </Card>
+  <Card
+    title="REST API"
+    icon="code"
+    href="/api/introduction"
+    color="#FF6B6B"
+  >
+    Build custom integrations with our REST API
+  </Card>
 </CardGroup>
 
 ## Why Joyfill?
@@ -67,7 +75,7 @@ Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms
   </Accordion>
   
   <Accordion title="📱 Cross-Platform" icon="mobile">
-    Build once, deploy everywhere. Consistent API across iOS, Android, React Native, and Web platforms.
+    Build once, deploy everywhere. Consistent API across iOS, Android, React Native, Web, and REST API.
   </Accordion>
   
   <Accordion title="🔒 Enterprise-Ready" icon="shield-check">
@@ -119,6 +127,13 @@ Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms
 
 <CardGroup cols={2}>
   <Card
+    title="Create Document API"
+    icon="code"
+    href="/api/documents/create"
+  >
+    Create documents via REST API
+  </Card>
+  <Card
     title="Form Modes"
     icon="toggle-on"
     href="/ios/guides/modes"
@@ -133,18 +148,11 @@ Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms
     Populate and extract form data
   </Card>
   <Card
-    title="Image Uploads"
-    icon="image"
-    href="/ios/guides/image-upload-handling"
+    title="Authentication"
+    icon="key"
+    href="/api/authentication"
   >
-    Handle image uploads and attachments
-  </Card>
-  <Card
-    title="Event Handling"
-    icon="bolt"
-    href="/ios/guides/event-handling"
-  >
-    Master the event system
+    Secure your API requests
   </Card>
 </CardGroup>
 
@@ -211,6 +219,18 @@ const form = new Joyfill.Form({
   container: '#form-container'
 });
 form.load();
+```
+
+```bash REST API
+# Create a document from template
+curl -X POST https://api-joy.joyfill.io/v1/documents \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "New Document",
+    "group": "group_id",
+    "template": "template_id"
+  }'
 ```
 
 </CodeGroup>

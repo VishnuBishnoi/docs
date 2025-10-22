@@ -165,6 +165,50 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "REST API",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "api/introduction",
+              "api/authentication",
+              "api/errors"
+            ]
+          },
+          {
+            "group": "Documents",
+            "pages": [
+              "api/documents/overview",
+              "api/documents/create",
+              "api/documents/bulk-create",
+              "api/documents/retrieve",
+              "api/documents/list",
+              "api/documents/update",
+              "api/documents/delete"
+            ]
+          },
+          {
+            "group": "Templates",
+            "pages": [
+              "api/templates/overview",
+              "api/templates/create",
+              "api/templates/retrieve",
+              "api/templates/list",
+              "api/templates/update",
+              "api/templates/delete"
+            ]
+          },
+          {
+            "group": "Additional Resources",
+            "pages": [
+              "api/groups/overview",
+              "api/users/overview",
+              "api/utilities/overview"
+            ]
+          }
+        ]
       }
     ],
     "global": {

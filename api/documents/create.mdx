@@ -1,0 +1,397 @@
+---
+title: "Create a Document"
+description: "Create new documents via the Joyfill API"
+api: "POST https://api-joy.joyfill.io/v1/documents"
+---
+
+# Create a Document
+
+Create a new document using either a template or raw document data.
+
+## Endpoint
+
+```
+POST https://api-joy.joyfill.io/v1/documents
+```
+
+## Document Creation Strategies
+
+There are two ways to create documents in Joyfill:
+
+### 1. Document from Template
+
+Use a template ID to generate a new document with pre-defined structure:
+
+```json
+{
+  "name": "New Customer Form",
+  "group": "group_id",
+  "template": "template_id"
+}
+```
+
+**Use When:**
+- Creating documents from existing templates
+- Maintaining consistent structure
+- Quick document generation
+
+### 2. Raw Document
+
+Pass custom `files` and `fields` for complete control:
+
+```json
+{
+  "name": "Custom Document",
+  "group": "group_id",
+  "files": [/* JoyDocFileObject */],
+  "fields": [/* JoyDocFieldObject */]
+}
+```
+
+**Use When:**
+- Creating documents with custom structure
+- Programmatically generating forms
+- Migrating from other systems
+
+<Note>
+  You can combine both approaches: pass a `template` ID along with custom `files` and `fields`. The template will be used as a reference, but your custom data will be used for the actual document.
+</Note>
+
+## Request Body
+
+### Required Parameters
+
+<ParamField body="name" type="string" required>
+  The name of the document
+</ParamField>
+
+<ParamField body="group" type="string" required>
+  The group ID where the document belongs
+</ParamField>
+
+### Optional Parameters
+
+<ParamField body="template" type="string">
+  Template ID to create document from
+</ParamField>
+
+<ParamField body="files" type="array">
+  Array of file objects (pages) for the document
+</ParamField>
+
+<ParamField body="fields" type="array">
+  Array of field objects with values
+</ParamField>
+
+<ParamField body="stage" type="string" default="draft">
+  Document stage: `draft`, `submitted`, `completed`, `archived`
+</ParamField>
+
+<ParamField body="metadata" type="object">
+  Custom metadata for the document
+</ParamField>
+
+## Examples
+
+### Create from Template
+
+<CodeGroup>
+
+```bash cURL
+curl -X POST https://api-joy.joyfill.io/v1/documents \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Customer Onboarding - John Doe",
+    "group": "grp_abc123",
+    "template": "tmpl_xyz789"
+  }'
+```
+
+```javascript Node.js
+const axios = require('axios');
+
+const createDocument = async () => {
+  try {
+    const response = await axios.post(
+      'https://api-joy.joyfill.io/v1/documents',
+      {
+        name: 'Customer Onboarding - John Doe',
+        group: 'grp_abc123',
+        template: 'tmpl_xyz789'
+      },
+      {
+        headers: {
+          'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    
+    console.log('Document created:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error:', error.response?.data);
+  }
+};
+
+createDocument();
+```
+
+```python Python
+import requests
+
+url = 'https://api-joy.joyfill.io/v1/documents'
+headers = {
+    'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+    'Content-Type': 'application/json'
+}
+data = {
+    'name': 'Customer Onboarding - John Doe',
+    'group': 'grp_abc123',
+    'template': 'tmpl_xyz789'
+}
+
+response = requests.post(url, json=data, headers=headers)
+
+if response.status_code == 201:
+    document = response.json()
+    print(f'Document created: {document["_id"]}')
+else:
+    print(f'Error: {response.json()}')
+```
+
+```ruby Ruby
+require 'net/http'
+require 'json'
+
+uri = URI('https://api-joy.joyfill.io/v1/documents')
+
+request = Net::HTTP::Post.new(uri)
+request['Authorization'] = 'Bearer YOUR_ACCESS_TOKEN'
+request['Content-Type'] = 'application/json'
+request.body = {
+  name: 'Customer Onboarding - John Doe',
+  group: 'grp_abc123',
+  template: 'tmpl_xyz789'
+}.to_json
+
+response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+  http.request(request)
+end
+
+puts response.body
+```
+
+```php PHP
+<?php
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_URL, 'https://api-joy.joyfill.io/v1/documents');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Authorization: Bearer YOUR_ACCESS_TOKEN',
+    'Content-Type: application/json'
+]);
+
+$data = [
+    'name' => 'Customer Onboarding - John Doe',
+    'group' => 'grp_abc123',
+    'template' => 'tmpl_xyz789'
+];
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+echo $response;
+?>
+```
+
+</CodeGroup>
+
+### Create with Pre-filled Data
+
+Create a document from a template with pre-populated fields:
+
+```json
+{
+  "name": "Pre-filled Application",
+  "group": "grp_abc123",
+  "template": "tmpl_xyz789",
+  "fields": [
+    {
+      "id": "field_name",
+      "value": "John Doe"
+    },
+    {
+      "id": "field_email",
+      "value": "john@example.com"
+    },
+    {
+      "id": "field_phone",
+      "value": "+1234567890"
+    }
+  ]
+}
+```
+
+### Create Raw Document
+
+Create a document with completely custom structure:
+
+```json
+{
+  "name": "Custom Registration Form",
+  "group": "grp_abc123",
+  "stage": "draft",
+  "files": [
+    {
+      "id": "page_1",
+      "name": "Registration Page",
+      "width": 800,
+      "height": 1000,
+      "url": "https://your-cdn.com/page1.pdf"
+    }
+  ],
+  "fields": [
+    {
+      "id": "full_name",
+      "type": "text",
+      "title": "Full Name",
+      "required": true,
+      "value": ""
+    },
+    {
+      "id": "email",
+      "type": "email",
+      "title": "Email Address",
+      "required": true,
+      "value": ""
+    },
+    {
+      "id": "agree_terms",
+      "type": "checkbox",
+      "title": "I agree to terms and conditions",
+      "required": true,
+      "value": false
+    }
+  ]
+}
+```
+
+## Response
+
+### Success Response (201 Created)
+
+```json
+{
+  "_id": "doc_abc123def456",
+  "name": "Customer Onboarding - John Doe",
+  "type": "form",
+  "stage": "draft",
+  "group": "grp_abc123",
+  "template": "tmpl_xyz789",
+  "createdOn": "2025-01-15T10:30:00.000Z",
+  "updatedOn": "2025-01-15T10:30:00.000Z",
+  "deleted": false,
+  "files": [
+    {
+      "id": "file_1",
+      "name": "Page 1",
+      "width": 800,
+      "height": 1000,
+      "url": "https://cdn.joyfill.io/..."
+    }
+  ],
+  "fields": [
+    {
+      "id": "field_1",
+      "type": "text",
+      "title": "Full Name",
+      "value": "",
+      "required": true
+    }
+  ]
+}
+```
+
+## Error Responses
+
+### 400 Bad Request
+
+Missing required fields or invalid data:
+
+```json
+{
+  "error": {
+    "code": "bad_request",
+    "message": "Validation failed",
+    "details": {
+      "field": "name",
+      "issue": "Name is required"
+    }
+  }
+}
+```
+
+### 404 Not Found
+
+Template or group not found:
+
+```json
+{
+  "error": {
+    "code": "not_found",
+    "message": "Template not found",
+    "details": {
+      "template_id": "tmpl_xyz789"
+    }
+  }
+}
+```
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Templates When Possible">
+    Templates ensure consistency and reduce errors. Create documents from templates unless you need complete custom control.
+  </Accordion>
+  
+  <Accordion title="Set Meaningful Names">
+    Use descriptive document names that help identify the purpose and owner (e.g., "Customer Onboarding - John Doe" instead of "Document 1").
+  </Accordion>
+  
+  <Accordion title="Pre-fill Known Data">
+    If you have user data available, pre-fill fields during document creation to improve user experience.
+  </Accordion>
+  
+  <Accordion title="Use Groups for Organization">
+    Organize documents into groups by project, team, or customer to maintain structure.
+  </Accordion>
+</AccordionGroup>
+
+## Related Endpoints
+
+<CardGroup cols={2}>
+  <Card title="Bulk Create Documents" icon="layer-group" href="/api/documents/bulk-create">
+    Create multiple documents at once
+  </Card>
+  <Card title="Update Document" icon="pen-to-square" href="/api/documents/update">
+    Update document after creation
+  </Card>
+  <Card title="List Documents" icon="list" href="/api/documents/list">
+    View all your documents
+  </Card>
+  <Card title="Templates API" icon="layer-group" href="/api/templates/overview">
+    Manage form templates
+  </Card>
+</CardGroup>
+
+## References
+
+- [Joyfill API Documentation](https://docs.joyfill.io/reference/create-a-document)
+- [Document Object Structure](https://docs.joyfill.io/reference/documents)
+

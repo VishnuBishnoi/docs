@@ -1,0 +1,59 @@
+---
+title: "Bulk Create Documents"
+description: "Create multiple documents in a single request"
+api: "POST https://api-joy.joyfill.io/v1/documents/bulk"
+---
+
+# Bulk Create Documents
+
+Create multiple documents efficiently in a single API request.
+
+## Endpoint
+
+```
+POST https://api-joy.joyfill.io/v1/documents/bulk
+```
+
+## Request Body
+
+```json
+{
+  "documents": [
+    {
+      "name": "Document 1",
+      "group": "grp_abc123",
+      "template": "tmpl_xyz789"
+    },
+    {
+      "name": "Document 2",
+      "group": "grp_abc123",
+      "template": "tmpl_xyz789"
+    }
+  ]
+}
+```
+
+## Response (201 Created)
+
+```json
+{
+  "created": 2,
+  "documents": [
+    {
+      "_id": "doc_1",
+      "name": "Document 1",
+      ...
+    },
+    {
+      "_id": "doc_2",
+      "name": "Document 2",
+      ...
+    }
+  ]
+}
+```
+
+<Tip>
+  Bulk operations are more efficient than individual requests when creating multiple documents. Use them to reduce API calls and improve performance.
+</Tip>
+

@@ -1,0 +1,67 @@
+---
+title: "List All Documents"
+description: "Retrieve a list of all documents with filtering"
+api: "GET https://api-joy.joyfill.io/v1/documents"
+---
+
+# List All Documents
+
+Retrieve a list of documents with optional filtering and pagination.
+
+## Endpoint
+
+```
+GET https://api-joy.joyfill.io/v1/documents
+```
+
+## Query Parameters
+
+<ParamField query="group" type="string">
+  Filter by group ID
+</ParamField>
+
+<ParamField query="template" type="string">
+  Filter by template ID
+</ParamField>
+
+<ParamField query="stage" type="string">
+  Filter by document stage (draft, submitted, completed)
+</ParamField>
+
+<ParamField query="limit" type="number" default="50">
+  Number of documents per page (max 100)
+</ParamField>
+
+<ParamField query="offset" type="number" default="0">
+  Pagination offset
+</ParamField>
+
+## Example Request
+
+```bash
+curl "https://api-joy.joyfill.io/v1/documents?group=grp_abc123&limit=20" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+## Response (200 OK)
+
+```json
+{
+  "data": [
+    {
+      "_id": "doc_1",
+      "name": "Document 1",
+      ...
+    },
+    {
+      "_id": "doc_2",
+      "name": "Document 2",
+      ...
+    }
+  ],
+  "total": 45,
+  "limit": 20,
+  "offset": 0
+}
+```
+
