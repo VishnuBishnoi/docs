@@ -1,0 +1,159 @@
+---
+title: "Classes Reference"
+description: "Detailed documentation for all SDK classes"
+icon: "box"
+---
+
+# Classes Reference
+
+Complete reference for all classes and types in the Joyfill Web SDK.
+
+## JoyfillFormView
+
+The main view component for displaying forms.
+
+```swift
+class JoyfillFormView: UIView
+```
+
+**Properties:**
+- `delegate`: `JoyfillFormDelegate?` - The form delegate
+- `appearance`: `JoyfillAppearance` - Visual appearance configuration
+- `imageConfig`: `JoyfillImageConfig` - Image handling configuration
+
+**Methods:**
+- See [Functions Reference](/web/api-reference/functions) for detailed method documentation
+
+## JoyfillFormConfig
+
+Configuration object for initializing forms.
+
+```swift
+struct JoyfillFormConfig
+```
+
+**Properties:**
+- `mode`: `JoyfillFormMode` - The form mode
+- `templateId`: `String` - Template identifier
+- `documentId`: `String?` - Document identifier (for edit mode)
+- `initialData`: `[String: Any]?` - Pre-populated data
+- `validateOnSubmit`: `Bool` - Enable validation on submit
+- `validateOnChange`: `Bool` - Enable real-time validation
+
+## JoyfillForm
+
+Represents a loaded form instance.
+
+```swift
+class JoyfillForm
+```
+
+**Properties:**
+- `id`: `String` - Form identifier
+- `title`: `String` - Form title
+- `fields`: `[JoyfillField]` - Array of form fields
+- `mode`: `JoyfillFormMode` - Current form mode
+
+**Methods:**
+- `validate() -> Bool` - Validate the form
+- `getData() -> [String: Any]` - Get form data
+- `getValue(forField:) -> Any?` - Get field value
+
+## JoyfillField
+
+Represents a form field.
+
+```swift
+struct JoyfillField
+```
+
+**Properties:**
+- `identifier`: `String` - Unique field identifier
+- `type`: `JoyfillFieldType` - Field type
+- `label`: `String` - Display label
+- `value`: `Any?` - Current value
+- `required`: `Bool` - Whether field is required
+- `disabled`: `Bool` - Whether field is disabled
+
+## JoyfillFormMode
+
+Enum representing form modes.
+
+```swift
+enum JoyfillFormMode {
+    case readonly
+    case fill
+    case edit
+}
+```
+
+## JoyfillFieldType
+
+Enum representing field types.
+
+```swift
+enum JoyfillFieldType {
+    case text
+    case number
+    case email
+    case phone
+    case date
+    case datetime
+    case checkbox
+    case radio
+    case dropdown
+    case textarea
+    case file
+    case image
+}
+```
+
+## JoyfillAppearance
+
+Configuration for visual appearance.
+
+```swift
+struct JoyfillAppearance
+```
+
+**Properties:**
+- `primaryColor`: `UIColor` - Primary brand color
+- `backgroundColor`: `UIColor` - Background color
+- `textColor`: `UIColor` - Text color
+- `fontSize`: `CGFloat` - Base font size
+- `errorColor`: `UIColor` - Error message color
+
+## JoyfillImageConfig
+
+Configuration for image handling.
+
+```swift
+struct JoyfillImageConfig
+```
+
+**Properties:**
+- `compressionQuality`: `CGFloat` - JPEG compression (0.0-1.0)
+- `maxDimension`: `CGFloat` - Maximum image dimension
+- `format`: `ImageFormat` - Image format (.jpeg or .png)
+- `allowCamera`: `Bool` - Enable camera capture
+- `allowPhotoLibrary`: `Bool` - Enable photo library
+- `maxFileSize`: `Int` - Maximum file size in bytes
+
+## JoyfillFormDelegate
+
+Protocol for handling form events.
+
+```swift
+protocol JoyfillFormDelegate: AnyObject {
+    func formDidLoad(_ form: JoyfillForm)
+    func formWillSubmit(_ form: JoyfillForm) -> Bool
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any])
+    func form(_ form: JoyfillForm, didUpdateField field: JoyfillField)
+    func form(_ form: JoyfillForm, didFocusField field: JoyfillField)
+    func form(_ form: JoyfillForm, didBlurField field: JoyfillField)
+    func form(_ form: JoyfillForm, didFailWithError error: Error)
+}
+```
+
+All methods are optional with default implementations.
+

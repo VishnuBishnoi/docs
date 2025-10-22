@@ -1,0 +1,109 @@
+---
+title: "Form Modes"
+description: "Understanding readonly, fill, and edit modes"
+icon: "toggle-on"
+---
+
+# Form Modes
+
+Joyfill supports three distinct modes for form rendering, each designed for specific use cases.
+
+## Available Modes
+
+### Readonly Mode
+
+Display forms in a non-editable state, perfect for viewing submitted forms or archived documents.
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .readonly,
+    templateId: "your_template_id"
+)
+
+formView.loadForm(config: config)
+```
+
+**Use Cases:**
+- Viewing completed forms
+- Displaying form history
+- Showing read-only receipts
+- Archival purposes
+
+### Fill Mode
+
+Allow users to fill out empty or partially completed forms.
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+
+formView.loadForm(config: config)
+```
+
+**Use Cases:**
+- New form submissions
+- Initial data entry
+- Customer-facing forms
+- Survey collection
+
+### Edit Mode
+
+Enable editing of existing form data, ideal for updating previously submitted information.
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .edit,
+    templateId: "your_template_id",
+    documentId: "existing_document_id"
+)
+
+formView.loadForm(config: config)
+```
+
+**Use Cases:**
+- Updating submitted forms
+- Correcting errors
+- Adding missing information
+- Form revisions
+
+## Switching Modes Dynamically
+
+You can change the form mode at runtime:
+
+```swift
+// Switch to readonly mode
+formView.setMode(.readonly)
+
+// Switch to edit mode
+formView.setMode(.edit)
+
+// Switch to fill mode
+formView.setMode(.fill)
+```
+
+<Note>
+  Switching modes will preserve the current form data unless you explicitly reload the form.
+</Note>
+
+## Mode-Specific Behaviors
+
+| Feature | Readonly | Fill | Edit |
+|---------|----------|------|------|
+| Edit fields | ❌ | ✅ | ✅ |
+| Submit button | ❌ | ✅ | ✅ |
+| Field validation | ❌ | ✅ | ✅ |
+| Data persistence | - | ✅ | ✅ |
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Event Handling" icon="bolt" href="/react-native/guides/event-handling">
+    Learn how to handle form events
+  </Card>
+  <Card title="Data Management" icon="database" href="/react-native/guides/populating-and-extracting-data">
+    Work with form data
+  </Card>
+</CardGroup>
+

@@ -1,0 +1,222 @@
+---
+title: "Quickstart"
+description: "Build your first form with the Joyfill Kotlin SDK"
+icon: "rocket"
+---
+
+# Quickstart Guide
+
+Get up and running with Joyfill in your Android app in just a few minutes.
+
+## Prerequisites
+
+- Joyfill Kotlin SDK installed ([Installation Guide](/kotlin/getting-started/installation))
+- A Joyfill access token from your dashboard
+- A form template ID
+
+## Step 1: Initialize Joyfill
+
+First, configure the SDK with your access token:
+
+```swift AppDelegate.swift
+import UIKit
+import Joyfill
+
+@main
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    func application(_ application: UIApplication, 
+                    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Initialize Joyfill
+        Joyfill.configure(accessToken: "your_access_token")
+        
+        return true
+    }
+}
+```
+
+## Step 2: Load a Form
+
+Create a view controller to display your form:
+
+```swift FormViewController.swift
+import UIKit
+import Joyfill
+
+class FormViewController: UIViewController {
+    
+    var formView: JoyfillFormView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Create form view
+        formView = JoyfillFormView()
+        formView.delegate = self
+        view.addSubview(formView)
+        
+        // Setup constraints
+        formView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            formView.topAnchor.constraint(equalTo: view.topAnchor),
+            formView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            formView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        // Load form
+        loadForm()
+    }
+    
+    func loadForm() {
+        let formConfig = JoyfillFormConfig(
+            mode: .fill,
+            templateId: "your_template_id"
+        )
+        
+        formView.loadForm(config: formConfig)
+    }
+}
+```
+
+## Step 3: Handle Form Events
+
+Implement the delegate to handle form events:
+
+```swift FormViewController.swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func formDidLoad(_ form: JoyfillForm) {
+        print("Form loaded successfully")
+    }
+    
+    func form(_ form: JoyfillForm, didUpdateField field: JoyfillField) {
+        print("Field updated: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didFailWithError error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+    
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any]) {
+        print("Form submitted with data: \(data)")
+        // Handle form submission
+    }
+}
+```
+
+## Step 4: Customize Appearance (Optional)
+
+Customize the form appearance to match your brand:
+
+```swift
+let appearance = JoyfillAppearance()
+appearance.primaryColor = .systemBlue
+appearance.backgroundColor = .white
+appearance.textColor = .black
+appearance.fontSize = 16
+
+formView.appearance = appearance
+```
+
+## Complete Example
+
+Here's a complete, working example:
+
+```swift FormViewController.swift
+import UIKit
+import Joyfill
+
+class FormViewController: UIViewController {
+    
+    var formView: JoyfillFormView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        setupFormView()
+        customizeAppearance()
+        loadForm()
+    }
+    
+    func setupFormView() {
+        formView = JoyfillFormView()
+        formView.delegate = self
+        view.addSubview(formView)
+        
+        formView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            formView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            formView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            formView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            formView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    func customizeAppearance() {
+        let appearance = JoyfillAppearance()
+        appearance.primaryColor = UIColor(red: 0, green: 0.4, blue: 1, alpha: 1)
+        formView.appearance = appearance
+    }
+    
+    func loadForm() {
+        let formConfig = JoyfillFormConfig(
+            mode: .fill,
+            templateId: "your_template_id"
+        )
+        
+        formView.loadForm(config: formConfig)
+    }
+}
+
+extension FormViewController: JoyfillFormDelegate {
+    
+    func formDidLoad(_ form: JoyfillForm) {
+        print("✅ Form loaded successfully")
+        navigationItem.title = form.title
+    }
+    
+    func form(_ form: JoyfillForm, didUpdateField field: JoyfillField) {
+        print("📝 Field updated: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didFailWithError error: Error) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any]) {
+        print("🚀 Form submitted")
+        // Navigate to success screen or dismiss
+        navigationController?.popViewController(animated: true)
+    }
+}
+```
+
+<Tip>
+  Run your app and you should see your form loading! If you encounter any issues, check the console for error messages.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Modes" icon="toggle-on" href="/kotlin/guides/modes">
+    Learn about readonly, fill, and edit modes
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/kotlin/guides/event-handling">
+    Master the event system
+  </Card>
+  <Card title="Data Management" icon="database" href="/kotlin/guides/populating-and-extracting-data">
+    Populate and extract form data
+  </Card>
+  <Card title="API Reference" icon="code" href="/kotlin/api-reference/overview">
+    Explore the full API
+  </Card>
+</CardGroup>
+

@@ -1,0 +1,217 @@
+---
+title: "Image Upload Handling"
+description: "Handle image uploads and attachments in forms"
+icon: "image"
+---
+
+# Image Upload Handling
+
+Learn how to handle image uploads, configure storage options, and manage image attachments in your iOS forms.
+
+## Basic Image Upload
+
+By default, Joyfill handles image uploads automatically:
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+
+// Images will be uploaded to Joyfill's default storage
+formView.loadForm(config: config)
+```
+
+## Custom Upload Handler
+
+Implement custom image upload logic for your own storage solution:
+
+```swift
+class FormViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Set custom upload handler
+        formView.imageUploadHandler = { [weak self] image, completion in
+            self?.uploadImage(image, completion: completion)
+        }
+    }
+    
+    func uploadImage(_ image: UIImage, completion: @escaping (Result<URL, Error>) -> Void) {
+        // Convert image to data
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(.failure(ImageError.conversionFailed))
+            return
+        }
+        
+        // Upload to your server
+        let uploadURL = URL(string: "https://your-api.com/upload")!
+        var request = URLRequest(url: uploadURL)
+        request.httpMethod = "POST"
+        request.httpBody = imageData
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            // Parse response and return image URL
+            if let imageURL = self?.parseImageURL(from: data) {
+                completion(.success(imageURL))
+            } else {
+                completion(.failure(ImageError.uploadFailed))
+            }
+        }.resume()
+    }
+    
+    func parseImageURL(from data: Data?) -> URL? {
+        // Parse your server's response
+        // Return the uploaded image URL
+        return nil
+    }
+}
+
+enum ImageError: Error {
+    case conversionFailed
+    case uploadFailed
+}
+```
+
+## Image Compression
+
+Configure image compression before upload:
+
+```swift
+let imageConfig = JoyfillImageConfig()
+imageConfig.compressionQuality = 0.7
+imageConfig.maxDimension = 2048
+imageConfig.format = .jpeg
+
+formView.imageConfig = imageConfig
+```
+
+## Handling Image Selection
+
+Customize the image picker experience:
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func form(_ form: JoyfillForm, willSelectImageFor field: JoyfillField) {
+        // Called before image picker is shown
+        print("About to select image for field: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didSelectImage image: UIImage, for field: JoyfillField) {
+        // Called after user selects an image
+        print("Image selected for field: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didUploadImage url: URL, for field: JoyfillField) {
+        // Called after successful upload
+        print("Image uploaded: \(url.absoluteString)")
+    }
+    
+    func form(_ form: JoyfillForm, didFailImageUpload error: Error, for field: JoyfillField) {
+        // Handle upload failures
+        print("Image upload failed: \(error.localizedDescription)")
+        
+        let alert = UIAlertController(
+            title: "Upload Failed",
+            message: "Please try again",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+}
+```
+
+## Image Sources
+
+Configure available image sources:
+
+```swift
+let imageConfig = JoyfillImageConfig()
+imageConfig.allowCamera = true
+imageConfig.allowPhotoLibrary = true
+imageConfig.allowFiles = false
+
+formView.imageConfig = imageConfig
+```
+
+## Multiple Image Uploads
+
+Handle fields that accept multiple images:
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+
+// Enable multiple image uploads for specific field types
+config.multipleImagesEnabled = true
+config.maxImagesPerField = 5
+
+formView.loadForm(config: config)
+```
+
+## Progress Tracking
+
+Track upload progress for better UX:
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func form(_ form: JoyfillForm, imageUploadProgress progress: Double, for field: JoyfillField) {
+        // Update UI with upload progress (0.0 to 1.0)
+        let percentage = Int(progress * 100)
+        print("Upload progress: \(percentage)%")
+        
+        // Update a progress indicator
+        // progressView.progress = Float(progress)
+    }
+}
+```
+
+<Warning>
+  Always handle image upload failures gracefully and provide clear feedback to users. Large images can take time to upload, especially on slower connections.
+</Warning>
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Image Compression">
+    Always compress images before upload to reduce bandwidth and improve performance. Use appropriate compression quality (0.7-0.8 is usually sufficient).
+  </Accordion>
+  
+  <Accordion title="File Size Limits">
+    Implement file size limits to prevent extremely large uploads:
+    ```swift
+    imageConfig.maxFileSize = 10 * 1024 * 1024 // 10 MB
+    ```
+  </Accordion>
+  
+  <Accordion title="Error Handling">
+    Provide clear error messages and allow users to retry failed uploads easily.
+  </Accordion>
+  
+  <Accordion title="Offline Support">
+    Consider queuing uploads when offline and retrying when connection is restored.
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Field Validation" icon="check-circle" href="/ios/guides/required-field-validation">
+    Learn about field validation
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/ios/guides/event-handling">
+    Master the event system
+  </Card>
+</CardGroup>
+

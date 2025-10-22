@@ -1,0 +1,208 @@
+---
+title: "Event Handling"
+description: "Handle form events and user interactions"
+icon: "bolt"
+---
+
+# Event Handling
+
+Master the Joyfill event system to create responsive and interactive form experiences.
+
+## Form Delegate
+
+Implement `JoyfillFormDelegate` to receive form events:
+
+```swift
+class FormViewController: UIViewController, JoyfillFormDelegate {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        formView.delegate = self
+    }
+    
+    // Form lifecycle events
+    func formDidLoad(_ form: JoyfillForm) {
+        print("Form loaded")
+    }
+    
+    func formWillSubmit(_ form: JoyfillForm) -> Bool {
+        print("Form is about to submit")
+        return true // Return false to cancel submission
+    }
+    
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any]) {
+        print("Form submitted successfully")
+    }
+    
+    // Field events
+    func form(_ form: JoyfillForm, didUpdateField field: JoyfillField) {
+        print("Field updated: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didFocusField field: JoyfillField) {
+        print("Field focused: \(field.identifier)")
+    }
+    
+    func form(_ form: JoyfillForm, didBlurField field: JoyfillField) {
+        print("Field blurred: \(field.identifier)")
+    }
+    
+    // Error handling
+    func form(_ form: JoyfillForm, didFailWithError error: Error) {
+        print("Error: \(error.localizedDescription)")
+    }
+}
+```
+
+## Available Events
+
+| Event | Description | Parameters |
+|-------|-------------|------------|
+| `formDidLoad` | Form finished loading | `form` |
+| `formWillSubmit` | Before form submission | `form` |
+| `formDidSubmit` | After successful submission | `form`, `data` |
+| `didUpdateField` | Field value changed | `form`, `field` |
+| `didFocusField` | Field received focus | `form`, `field` |
+| `didBlurField` | Field lost focus | `form`, `field` |
+| `didFailWithError` | Error occurred | `form`, `error` |
+
+## Field-Specific Events
+
+Listen to events for specific fields:
+
+```swift
+formView.addEventListener(forField: "email") { event in
+    switch event {
+    case .valueChanged(let newValue):
+        print("Email changed to: \(newValue)")
+        validateEmail(newValue as? String)
+        
+    case .focused:
+        print("Email field focused")
+        
+    case .blurred:
+        print("Email field blurred")
+        
+    @unknown default:
+        break
+    }
+}
+```
+
+## Form State Changes
+
+Track form state:
+
+```swift
+func form(_ form: JoyfillForm, didChangeState state: JoyfillFormState) {
+    switch state {
+    case .loading:
+        showLoadingIndicator()
+        
+    case .ready:
+        hideLoadingIndicator()
+        
+    case .submitting:
+        disableSubmitButton()
+        showSubmittingIndicator()
+        
+    case .submitted:
+        hideSubmittingIndicator()
+        navigateToSuccessScreen()
+        
+    case .error(let message):
+        hideSubmittingIndicator()
+        showError(message)
+        
+    @unknown default:
+        break
+    }
+}
+```
+
+## Custom Event Handlers
+
+Create custom event handlers for complex logic:
+
+```swift
+class FormEventHandler {
+    
+    func handleFieldUpdate(_ field: JoyfillField, form: JoyfillForm) {
+        // Log analytics
+        Analytics.trackFieldUpdate(fieldId: field.identifier)
+        
+        // Update dependent fields
+        if field.identifier == "country" {
+            updateStateField(basedOn: field.value, in: form)
+        }
+        
+        // Auto-save
+        autoSaveForm(form)
+    }
+    
+    func updateStateField(basedOn country: Any?, in form: JoyfillForm) {
+        guard let country = country as? String else { return }
+        
+        // Load states for selected country
+        let states = getStates(for: country)
+        form.updateFieldOptions("state", options: states)
+    }
+    
+    func autoSaveForm(_ form: JoyfillForm) {
+        let data = form.getData()
+        FormDataManager.saveFormData(data, forKey: form.id)
+    }
+}
+```
+
+## Event Debouncing
+
+Debounce rapid events like typing:
+
+```swift
+class DebouncedEventHandler {
+    
+    private var workItem: DispatchWorkItem?
+    private let delay: TimeInterval
+    
+    init(delay: TimeInterval = 0.5) {
+        self.delay = delay
+    }
+    
+    func debounce(_ action: @escaping () -> Void) {
+        workItem?.cancel()
+        
+        let newWorkItem = DispatchWorkItem(block: action)
+        workItem = newWorkItem
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: newWorkItem)
+    }
+}
+
+// Usage
+let debouncer = DebouncedEventHandler(delay: 0.5)
+
+func form(_ form: JoyfillForm, didUpdateField field: JoyfillField) {
+    if field.identifier == "search" {
+        debouncer.debounce {
+            self.performSearch(query: field.value as? String)
+        }
+    }
+}
+```
+
+<Tip>
+  Use event debouncing for performance-intensive operations like API calls or complex validations.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code" href="/web/api-reference/overview">
+    Explore the complete API
+  </Card>
+  <Card title="Release Notes" icon="newspaper" href="/web/changelogs/releases">
+    See what's new
+  </Card>
+</CardGroup>
+

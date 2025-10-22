@@ -1,0 +1,106 @@
+---
+title: "API Overview"
+description: "Complete API reference for the Joyfill Kotlin SDK"
+icon: "code"
+---
+
+# API Reference
+
+Comprehensive documentation for all classes, methods, and properties in the Joyfill Kotlin SDK.
+
+## Core Components
+
+<CardGroup cols={2}>
+  <Card title="Functions" icon="function" href="/kotlin/api-reference/functions">
+    Core functions and methods
+  </Card>
+  <Card title="Classes" icon="box" href="/kotlin/api-reference/classes">
+    Main SDK classes and objects
+  </Card>
+</CardGroup>
+
+## Quick Reference
+
+### JoyfillFormView
+
+The main view component for rendering forms.
+
+```swift
+let formView = JoyfillFormView()
+formView.delegate = self
+view.addSubview(formView)
+```
+
+**Key Methods:**
+- `loadForm(config:)` - Load a form with configuration
+- `validate()` - Validate all form fields
+- `getFormData()` - Extract all form data
+- `setFieldValue(_:forField:)` - Set a field value
+
+### JoyfillFormConfig
+
+Configuration object for form initialization.
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "template_id",
+    initialData: [:]
+)
+```
+
+**Properties:**
+- `mode` - Form mode (readonly, fill, edit)
+- `templateId` - Template identifier
+- `initialData` - Pre-populated form data
+- `validateOnSubmit` - Enable validation on submit
+
+### JoyfillFormDelegate
+
+Protocol for handling form events.
+
+```swift
+func formDidLoad(_ form: JoyfillForm)
+func formDidSubmit(_ form: JoyfillForm, data: [String: Any])
+func form(_ form: JoyfillForm, didUpdateField field: JoyfillField)
+```
+
+## Common Patterns
+
+### Loading a Form
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+formView.loadForm(config: config)
+```
+
+### Handling Events
+
+```swift
+extension ViewController: JoyfillFormDelegate {
+    func formDidLoad(_ form: JoyfillForm) {
+        // Form loaded
+    }
+}
+```
+
+### Extracting Data
+
+```swift
+let formData = formView.getFormData()
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Functions Reference" icon="function" href="/kotlin/api-reference/functions">
+    Detailed function documentation
+  </Card>
+  <Card title="Classes Reference" icon="box" href="/kotlin/api-reference/classes">
+    Complete class documentation
+  </Card>
+</CardGroup>
+

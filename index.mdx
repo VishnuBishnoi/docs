@@ -1,97 +1,253 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Welcome to Joyfill"
+description: "Embeddable form builder SDKs for every platform"
 ---
 
-## Setting up
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.png"
+  alt="Joyfill Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.png"
+  alt="Joyfill Hero Dark"
+/>
 
-Get your documentation site up and running in minutes.
+# Developer Documentation
+
+Build powerful, customizable form experiences with Joyfill SDKs. Integrate forms into your applications across iOS, Android, React Native, and Web platforms.
+
+## Choose Your SDK
+
+<CardGroup cols={2}>
+  <Card
+    title="iOS SDK"
+    icon="apple"
+    href="/ios/introduction"
+    color="#000000"
+  >
+    Build native iOS form experiences with Swift
+  </Card>
+  <Card
+    title="Kotlin SDK"
+    icon="android"
+    href="/kotlin/introduction"
+    color="#3DDC84"
+  >
+    Create Android apps with our Kotlin SDK
+  </Card>
+  <Card
+    title="React Native SDK"
+    icon="react"
+    href="/react-native/introduction"
+    color="#61DAFB"
+  >
+    Cross-platform mobile forms with React Native
+  </Card>
+  <Card
+    title="Web SDK"
+    icon="globe"
+    href="/web/introduction"
+    color="#0066FF"
+  >
+    Embed forms in any web application
+  </Card>
+</CardGroup>
+
+## Why Joyfill?
+
+<AccordionGroup>
+  <Accordion title="🚀 Quick Integration" icon="rocket">
+    Get started in minutes with our straightforward SDKs. Add forms to your app with just a few lines of code.
+  </Accordion>
+  
+  <Accordion title="🎨 Fully Customizable" icon="palette">
+    Match your brand perfectly with comprehensive styling options. Every element is customizable to fit your design system.
+  </Accordion>
+  
+  <Accordion title="📱 Cross-Platform" icon="mobile">
+    Build once, deploy everywhere. Consistent API across iOS, Android, React Native, and Web platforms.
+  </Accordion>
+  
+  <Accordion title="🔒 Enterprise-Ready" icon="shield-check">
+    Built for scale with enterprise-grade security, compliance, and reliability. Trusted by 1000+ companies.
+  </Accordion>
+</AccordionGroup>
+
+## Key Features
+
+<CardGroup cols={3}>
+  <Card title="Multiple Modes" icon="toggle-on">
+    Readonly, fill, and edit modes for different use cases
+  </Card>
+  <Card title="Field Validation" icon="check-circle">
+    Built-in and custom validation rules
+  </Card>
+  <Card title="Image Uploads" icon="image">
+    Handle file and image uploads seamlessly
+  </Card>
+  <Card title="Event System" icon="bolt">
+    Comprehensive event handling for user interactions
+  </Card>
+  <Card title="Data Management" icon="database">
+    Easy data population and extraction
+  </Card>
+  <Card title="Schema Validation" icon="shield-check">
+    JSON Schema support for data integrity
+  </Card>
+</CardGroup>
+
+## Get Started in Minutes
+
+<Steps>
+  <Step title="Choose Your Platform">
+    Select the SDK that matches your technology stack - iOS, Kotlin, React Native, or Web.
+  </Step>
+  <Step title="Install the SDK">
+    Quick installation via your preferred package manager (SPM, Gradle, npm).
+  </Step>
+  <Step title="Initialize & Configure">
+    Add your access token and configure the SDK to match your needs.
+  </Step>
+  <Step title="Load Your First Form">
+    Display a form in your app with just a few lines of code.
+  </Step>
+</Steps>
+
+## Popular Guides
+
+<CardGroup cols={2}>
+  <Card
+    title="Form Modes"
+    icon="toggle-on"
+    href="/ios/guides/modes"
+  >
+    Learn about readonly, fill, and edit modes
+  </Card>
+  <Card
+    title="Data Management"
+    icon="database"
+    href="/ios/guides/populating-and-extracting-data"
+  >
+    Populate and extract form data
+  </Card>
+  <Card
+    title="Image Uploads"
+    icon="image"
+    href="/ios/guides/image-upload-handling"
+  >
+    Handle image uploads and attachments
+  </Card>
+  <Card
+    title="Event Handling"
+    icon="bolt"
+    href="/ios/guides/event-handling"
+  >
+    Master the event system
+  </Card>
+</CardGroup>
+
+## Quick Example
+
+Here's how easy it is to get started with Joyfill:
+
+<CodeGroup>
+
+```swift iOS
+import Joyfill
+
+// Initialize
+Joyfill.configure(accessToken: "your_token")
+
+// Load form
+let formView = JoyfillFormView()
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+formView.loadForm(config: config)
+```
+
+```kotlin Android
+import io.joyfill.Joyfill
+
+// Initialize
+Joyfill.configure("your_token")
+
+// Load form
+val formView = JoyfillFormView(context)
+val config = JoyfillFormConfig(
+    mode = FormMode.FILL,
+    templateId = "your_template_id"
+)
+formView.loadForm(config)
+```
+
+```javascript React Native
+import { JoyfillForm } from '@joyfill/react-native';
+
+// Initialize
+Joyfill.configure('your_token');
+
+// Load form
+<JoyfillForm
+  mode="fill"
+  templateId="your_template_id"
+  onSubmit={(data) => console.log(data)}
+/>
+```
+
+```javascript Web
+import { Joyfill } from '@joyfill/web';
+
+// Initialize
+Joyfill.configure('your_token');
+
+// Load form
+const form = new Joyfill.Form({
+  mode: 'fill',
+  templateId: 'your_template_id',
+  container: '#form-container'
+});
+form.load();
+```
+
+</CodeGroup>
+
+## Need Help?
+
+<CardGroup cols={3}>
+  <Card
+    title="Documentation"
+    icon="book-open"
+    href="/ios/getting-started/installation"
+  >
+    Explore comprehensive guides
+  </Card>
+  <Card
+    title="GitHub"
+    icon="github"
+    href="https://github.com/joyfill"
+  >
+    View source code and examples
+  </Card>
+  <Card
+    title="Support"
+    icon="life-ring"
+    href="https://joyfill.io/support"
+  >
+    Get help from our team
+  </Card>
+</CardGroup>
+
+---
 
 <Card
-  title="Start here"
+  title="Ready to build?"
   icon="rocket"
-  href="/quickstart"
+  href="/ios/getting-started/installation"
   horizontal
 >
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
-  </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
-  </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
-  </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
-  </Card>
-</Columns>
-
-## Create beautiful pages
-
-Everything you need to create world-class documentation.
-
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
-
-## Need inspiration?
-
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
+  Start with our quickstart guide and build your first form in minutes
 </Card>

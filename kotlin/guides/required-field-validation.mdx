@@ -1,0 +1,233 @@
+---
+title: "Required Field Validation"
+description: "Implement and customize field validation rules"
+icon: "check-circle"
+---
+
+# Required Field Validation
+
+Ensure data quality by validating required fields and implementing custom validation rules.
+
+## Built-in Validation
+
+Joyfill automatically validates required fields before form submission:
+
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id"
+)
+
+config.validateOnSubmit = true
+formView.loadForm(config: config)
+```
+
+## Real-time Validation
+
+Enable validation as users fill out the form:
+
+```swift
+config.validateOnChange = true
+config.showValidationErrors = true
+```
+
+## Validation Events
+
+Handle validation events in your delegate:
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func form(_ form: JoyfillForm, didValidateField field: JoyfillField, isValid: Bool, error: ValidationError?) {
+        if !isValid {
+            print("Field \(field.identifier) is invalid: \(error?.message ?? "")")
+        }
+    }
+    
+    func form(_ form: JoyfillForm, didFailValidation errors: [ValidationError]) {
+        print("Form validation failed with \(errors.count) errors")
+        
+        // Show error summary
+        let errorMessages = errors.map { $0.message }.joined(separator: "\n")
+        showAlert(title: "Please fix these errors:", message: errorMessages)
+    }
+}
+```
+
+## Custom Validation Rules
+
+Add custom validation logic for specific fields:
+
+```swift
+formView.addValidator(forField: "email") { value in
+    guard let email = value as? String else {
+        return ValidationResult.invalid(message: "Email is required")
+    }
+    
+    let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+    let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+    
+    if emailPredicate.evaluate(with: email) {
+        return ValidationResult.valid
+    } else {
+        return ValidationResult.invalid(message: "Please enter a valid email address")
+    }
+}
+
+formView.addValidator(forField: "phone") { value in
+    guard let phone = value as? String else {
+        return ValidationResult.invalid(message: "Phone number is required")
+    }
+    
+    // Remove non-numeric characters
+    let digits = phone.filter { $0.isNumber }
+    
+    if digits.count == 10 {
+        return ValidationResult.valid
+    } else {
+        return ValidationResult.invalid(message: "Phone number must be 10 digits")
+    }
+}
+```
+
+## Field-Specific Validation
+
+Different field types have built-in validation:
+
+### Email Fields
+```swift
+// Automatic email format validation
+field.type = .email
+field.required = true
+```
+
+### Number Fields
+```swift
+// Min/max validation
+field.type = .number
+field.minValue = 0
+field.maxValue = 100
+field.required = true
+```
+
+### Date Fields
+```swift
+// Date range validation
+field.type = .date
+field.minDate = Date()
+field.maxDate = Calendar.current.date(byAdding: .year, value: 1, to: Date())
+field.required = true
+```
+
+### Text Fields
+```swift
+// Length validation
+field.type = .text
+field.minLength = 5
+field.maxLength = 100
+field.required = true
+```
+
+## Conditional Validation
+
+Make fields required based on other field values:
+
+```swift
+formView.addConditionalValidator(forField: "secondary_email") { form in
+    // Only require secondary email if primary email is filled
+    if let primaryEmail = form.getValue(forField: "primary_email") as? String,
+       !primaryEmail.isEmpty {
+        return true // Secondary email is now required
+    }
+    return false // Secondary email is optional
+}
+```
+
+## Custom Error Messages
+
+Customize validation error messages:
+
+```swift
+let validationConfig = JoyfillValidationConfig()
+validationConfig.requiredFieldMessage = "This field is required"
+validationConfig.invalidEmailMessage = "Please enter a valid email"
+validationConfig.invalidPhoneMessage = "Please enter a valid phone number"
+validationConfig.minLengthMessage = "Minimum {min} characters required"
+validationConfig.maxLengthMessage = "Maximum {max} characters allowed"
+
+formView.validationConfig = validationConfig
+```
+
+## Validation Styling
+
+Customize how validation errors are displayed:
+
+```swift
+let appearance = JoyfillAppearance()
+appearance.errorColor = .systemRed
+appearance.errorBorderWidth = 2
+appearance.showErrorIcons = true
+appearance.errorMessagePosition = .below
+
+formView.appearance = appearance
+```
+
+## Programmatic Validation
+
+Trigger validation manually:
+
+```swift
+// Validate entire form
+let isValid = formView.validate()
+
+if isValid {
+    print("Form is valid")
+} else {
+    print("Form has validation errors")
+}
+
+// Validate specific field
+let fieldIsValid = formView.validateField("email")
+
+// Get validation errors
+let errors = formView.getValidationErrors()
+for error in errors {
+    print("Field: \(error.fieldId), Error: \(error.message)")
+}
+```
+
+## Validation Before Submit
+
+Prevent submission of invalid forms:
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func formWillSubmit(_ form: JoyfillForm) -> Bool {
+        // Return false to prevent submission
+        let isValid = form.validate()
+        
+        if !isValid {
+            showAlert(title: "Validation Error", message: "Please fill all required fields")
+        }
+        
+        return isValid
+    }
+}
+```
+
+<Tip>
+  Combine real-time validation with submit-time validation for the best user experience. Show errors as users type, but also validate one final time before submission.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Data Management" icon="database" href="/kotlin/guides/populating-and-extracting-data">
+    Learn about form data handling
+  </Card>
+  <Card title="Schema Validation" icon="shield-check" href="/kotlin/guides/schema-validation">
+    Validate against JSON schemas
+  </Card>
+</CardGroup>
+

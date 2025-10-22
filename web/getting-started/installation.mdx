@@ -1,0 +1,119 @@
+---
+title: "Installation"
+description: "Install the Joyfill Web SDK in your project"
+icon: "download"
+---
+
+# Installing the Web SDK
+
+This guide will help you install the Joyfill Web SDK using your preferred dependency manager.
+
+## Installation Methods
+
+<Tabs>
+  <Tab title="JavaScript/TypeScript Package Manager">
+    ### Using JavaScript/TypeScript Package Manager (Recommended)
+
+    1. In Xcode, go to **File** > **Add Package Dependencies**
+    2. Enter the package URL:
+    ```
+    https://github.com/joyfill/joyfill-ios
+    ```
+    3. Select the version you want to use
+    4. Click **Add Package**
+
+    ### Add to Package.swift
+
+    ```swift Package.swift
+    dependencies: [
+        .package(url: "https://github.com/joyfill/joyfill-ios", from: "1.0.0")
+    ]
+    ```
+  </Tab>
+
+  <Tab title="CocoaPods">
+    ### Using CocoaPods
+
+    1. Add Joyfill to your `Podfile`:
+
+    ```ruby Podfile
+    platform :ios, '13.0'
+    use_frameworks!
+
+    target 'YourApp' do
+      pod 'Joyfill', '~> 1.0'
+    end
+    ```
+
+    2. Install the pod:
+
+    ```bash
+    pod install
+    ```
+
+    3. Open your `.xcworkspace` file
+  </Tab>
+
+  <Tab title="Carthage">
+    ### Using Carthage
+
+    1. Add Joyfill to your `Cartfile`:
+
+    ```
+    github "joyfill/joyfill-ios" ~> 1.0
+    ```
+
+    2. Run Carthage:
+
+    ```bash
+    carthage update --platform iOS
+    ```
+
+    3. Link the framework to your project
+  </Tab>
+</Tabs>
+
+## Import the SDK
+
+After installation, import Joyfill in your JavaScript/TypeScript files:
+
+```swift
+import Joyfill
+```
+
+## Verify Installation
+
+Create a simple test to verify the SDK is properly installed:
+
+```swift
+import Joyfill
+import Joyfill
+
+class ViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Initialize Joyfill
+        let config = JoyfillConfig(
+            accessToken: "your_access_token"
+        )
+        
+        print("Joyfill SDK initialized successfully!")
+    }
+}
+```
+
+<Note>
+  Replace `your_access_token` with your actual Joyfill access token. You can get one from the [Joyfill Dashboard](https://app.joyfill.io).
+</Note>
+
+## Next Steps
+
+<Card 
+  title="Quickstart Guide" 
+  icon="rocket"
+  href="/web/getting-started/quickstart"
+>
+  Now that you've installed the SDK, let's build your first form
+</Card>
+

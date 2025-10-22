@@ -1,0 +1,126 @@
+---
+title: "Schema Validation"
+description: "Validate form data against JSON schemas"
+icon: "shield-check"
+---
+
+# Schema Validation
+
+Use JSON Schema to enforce data structure and validation rules across your forms.
+
+## Overview
+
+Schema validation ensures that form data conforms to a predefined structure, providing an additional layer of data integrity.
+
+## Basic Schema Validation
+
+```swift
+let schema: [String: Any] = [
+    "type": "object",
+    "properties": [
+        "email": [
+            "type": "string",
+            "format": "email"
+        ],
+        "age": [
+            "type": "integer",
+            "minimum": 18,
+            "maximum": 100
+        ]
+    ],
+    "required": ["email", "age"]
+]
+
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id",
+    validationSchema: schema
+)
+
+formView.loadForm(config: config)
+```
+
+## Schema Examples
+
+### Email Validation
+```json
+{
+  "type": "string",
+  "format": "email",
+  "minLength": 5,
+  "maxLength": 100
+}
+```
+
+### Number Range
+```json
+{
+  "type": "number",
+  "minimum": 0,
+  "maximum": 100,
+  "multipleOf": 0.01
+}
+```
+
+### String Pattern
+```json
+{
+  "type": "string",
+  "pattern": "^[A-Z]{2}-[0-9]{4}$"
+}
+```
+
+### Array Validation
+```json
+{
+  "type": "array",
+  "items": {
+    "type": "string"
+  },
+  "minItems": 1,
+  "maxItems": 5,
+  "uniqueItems": true
+}
+```
+
+## Handling Schema Errors
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func form(_ form: JoyfillForm, didFailSchemaValidation errors: [SchemaValidationError]) {
+        print("Schema validation failed:")
+        
+        for error in errors {
+            print("Field: \(error.fieldPath)")
+            print("Error: \(error.message)")
+            print("Expected: \(error.expectedType)")
+            print("Received: \(error.actualValue)")
+        }
+        
+        // Show user-friendly error
+        showSchemaErrors(errors)
+    }
+    
+    func showSchemaErrors(_ errors: [SchemaValidationError]) {
+        let message = errors.map { $0.message }.joined(separator: "\n")
+        showAlert(title: "Validation Errors", message: message)
+    }
+}
+```
+
+<Note>
+  Schema validation complements field-level validation. Use both for comprehensive data validation.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Event Handling" icon="bolt" href="/kotlin/guides/event-handling">
+    Master form events
+  </Card>
+  <Card title="API Reference" icon="code" href="/kotlin/api-reference/overview">
+    Explore the full API
+  </Card>
+</CardGroup>
+

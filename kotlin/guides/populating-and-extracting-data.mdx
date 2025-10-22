@@ -1,0 +1,324 @@
+---
+title: "Populating and Extracting Data"
+description: "Work with form data - populate fields and extract values"
+icon: "database"
+---
+
+# Populating and Extracting Data
+
+Learn how to populate form fields with existing data and extract user-entered values.
+
+## Populating Form Data
+
+### Load Form with Pre-filled Data
+
+```swift
+let formData: [String: Any] = [
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1234567890",
+    "address": [
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zip": "94105"
+    ]
+]
+
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "your_template_id",
+    initialData: formData
+)
+
+formView.loadForm(config: config)
+```
+
+### Update Field Values Programmatically
+
+```swift
+// Update a single field
+formView.setFieldValue("John", forField: "first_name")
+
+// Update multiple fields
+let updates: [String: Any] = [
+    "email": "newemail@example.com",
+    "phone": "+1987654321"
+]
+formView.setFieldValues(updates)
+```
+
+## Extracting Form Data
+
+### Get All Form Data
+
+```swift
+// Get complete form data
+let formData = formView.getFormData()
+print("Form data: \(formData)")
+
+// Example output:
+// {
+//   "first_name": "John",
+//   "last_name": "Doe",
+//   "email": "john.doe@example.com",
+//   ...
+// }
+```
+
+### Get Specific Field Values
+
+```swift
+// Get single field value
+if let firstName = formView.getFieldValue("first_name") as? String {
+    print("First name: \(firstName)")
+}
+
+// Get multiple field values
+let fieldIds = ["first_name", "last_name", "email"]
+let values = formView.getFieldValues(fieldIds)
+```
+
+### Extract Data on Submit
+
+```swift
+extension FormViewController: JoyfillFormDelegate {
+    
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any]) {
+        print("Form submitted with data:")
+        
+        // Access specific fields
+        if let name = data["first_name"] as? String {
+            print("Name: \(name)")
+        }
+        
+        // Access nested data
+        if let address = data["address"] as? [String: Any] {
+            print("City: \(address["city"] ?? "")")
+        }
+        
+        // Send to your backend
+        sendToBackend(data)
+    }
+    
+    func sendToBackend(_ data: [String: Any]) {
+        // Your API call here
+    }
+}
+```
+
+## Working with Different Field Types
+
+### Text Fields
+
+```swift
+// Set text value
+formView.setFieldValue("Hello, World!", forField: "description")
+
+// Get text value
+if let text = formView.getFieldValue("description") as? String {
+    print(text)
+}
+```
+
+### Number Fields
+
+```swift
+// Set number value
+formView.setFieldValue(42, forField: "age")
+formView.setFieldValue(99.99, forField: "price")
+
+// Get number value
+if let age = formView.getFieldValue("age") as? Int {
+    print("Age: \(age)")
+}
+```
+
+### Date Fields
+
+```swift
+// Set date value
+let date = Date()
+formView.setFieldValue(date, forField: "birth_date")
+
+// Get date value
+if let birthDate = formView.getFieldValue("birth_date") as? Date {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    print("Birth date: \(formatter.string(from: birthDate))")
+}
+```
+
+### Boolean/Checkbox Fields
+
+```swift
+// Set boolean value
+formView.setFieldValue(true, forField: "agree_to_terms")
+
+// Get boolean value
+if let agreed = formView.getFieldValue("agree_to_terms") as? Bool {
+    print("Agreed: \(agreed)")
+}
+```
+
+### Dropdown/Select Fields
+
+```swift
+// Set selected option
+formView.setFieldValue("option_2", forField: "country")
+
+// Get selected option
+if let country = formView.getFieldValue("country") as? String {
+    print("Selected country: \(country)")
+}
+```
+
+### Multi-select Fields
+
+```swift
+// Set multiple selections
+let selections = ["option_1", "option_3", "option_5"]
+formView.setFieldValue(selections, forField: "interests")
+
+// Get multiple selections
+if let interests = formView.getFieldValue("interests") as? [String] {
+    print("Selected interests: \(interests.joined(separator: ", "))")
+}
+```
+
+## Data Validation
+
+Always validate data before submission:
+
+```swift
+func submitForm() {
+    // Validate first
+    guard formView.validate() else {
+        showAlert(title: "Validation Error", message: "Please fill all required fields")
+        return
+    }
+    
+    // Extract data
+    let formData = formView.getFormData()
+    
+    // Additional custom validation
+    guard isDataValid(formData) else {
+        showAlert(title: "Error", message: "Invalid data")
+        return
+    }
+    
+    // Submit to backend
+    submitToBackend(formData)
+}
+
+func isDataValid(_ data: [String: Any]) -> Bool {
+    // Your custom validation logic
+    return true
+}
+```
+
+## Handling File Uploads
+
+```swift
+// Files are typically represented as URLs or Data
+if let fileURL = formView.getFieldValue("resume") as? URL {
+    print("File path: \(fileURL.path)")
+    
+    // Read file data if needed
+    do {
+        let fileData = try Data(contentsOf: fileURL)
+        print("File size: \(fileData.count) bytes")
+    } catch {
+        print("Error reading file: \(error)")
+    }
+}
+```
+
+## Data Persistence
+
+Save form data locally for later:
+
+```swift
+class FormDataManager {
+    
+    static func saveFormData(_ data: [String: Any], forKey key: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(data, forKey: "form_data_\(key)")
+    }
+    
+    static func loadFormData(forKey key: String) -> [String: Any]? {
+        let defaults = UserDefaults.standard
+        return defaults.dictionary(forKey: "form_data_\(key)")
+    }
+    
+    static func clearFormData(forKey key: String) {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "form_data_\(key)")
+    }
+}
+
+// Usage
+// Save data
+let formData = formView.getFormData()
+FormDataManager.saveFormData(formData, forKey: "user_profile")
+
+// Load data later
+if let savedData = FormDataManager.loadFormData(forKey: "user_profile") {
+    let config = JoyfillFormConfig(
+        mode: .fill,
+        templateId: "your_template_id",
+        initialData: savedData
+    )
+    formView.loadForm(config: config)
+}
+```
+
+## Auto-save Functionality
+
+Implement auto-save as users fill the form:
+
+```swift
+class FormViewController: UIViewController {
+    
+    var autoSaveTimer: Timer?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupAutoSave()
+    }
+    
+    func setupAutoSave() {
+        // Save every 30 seconds
+        autoSaveTimer = Timer.scheduledTimer(withTimeInterval: 30.0, repeats: true) { [weak self] _ in
+            self?.autoSaveFormData()
+        }
+    }
+    
+    func autoSaveFormData() {
+        let formData = formView.getFormData()
+        FormDataManager.saveFormData(formData, forKey: "current_form")
+        print("✅ Form auto-saved")
+    }
+    
+    deinit {
+        autoSaveTimer?.invalidate()
+    }
+}
+```
+
+<Tip>
+  Always validate data on both client and server side for security and data integrity.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Schema Validation" icon="shield-check" href="/kotlin/guides/schema-validation">
+    Validate data against schemas
+  </Card>
+  <Card title="Event Handling" icon="bolt" href="/kotlin/guides/event-handling">
+    Handle form events
+  </Card>
+</CardGroup>
+

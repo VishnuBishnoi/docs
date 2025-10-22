@@ -1,68 +1,167 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mint Starter Kit",
+  "name": "Joyfill Documentation",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#0066FF",
+    "light": "#3385FF",
+    "dark": "#0052CC"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "iOS SDK",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "ios/introduction",
+              "ios/getting-started/installation",
+              "ios/getting-started/quickstart"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Guides",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "ios/guides/modes",
+              "ios/guides/image-upload-handling",
+              "ios/guides/required-field-validation",
+              "ios/guides/populating-and-extracting-data",
+              "ios/guides/schema-validation",
+              "ios/guides/event-handling"
             ]
           },
           {
-            "group": "Writing content",
+            "group": "API Reference",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "ios/api-reference/overview",
+              "ios/api-reference/functions",
+              "ios/api-reference/classes"
             ]
           },
           {
-            "group": "AI tools",
+            "group": "Resources",
             "pages": [
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
+              "ios/changelogs/releases",
+              "ios/about/security"
             ]
           }
         ]
       },
       {
-        "tab": "API reference",
+        "tab": "Kotlin SDK",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Getting Started",
             "pages": [
-              "api-reference/introduction"
+              "kotlin/introduction",
+              "kotlin/getting-started/installation",
+              "kotlin/getting-started/quickstart"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Guides",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "kotlin/guides/modes",
+              "kotlin/guides/image-upload-handling",
+              "kotlin/guides/required-field-validation",
+              "kotlin/guides/populating-and-extracting-data",
+              "kotlin/guides/schema-validation",
+              "kotlin/guides/event-handling"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "kotlin/api-reference/overview",
+              "kotlin/api-reference/functions",
+              "kotlin/api-reference/classes"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "kotlin/changelogs/releases",
+              "kotlin/about/security"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "React Native SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "react-native/introduction",
+              "react-native/getting-started/installation",
+              "react-native/getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "react-native/guides/modes",
+              "react-native/guides/image-upload-handling",
+              "react-native/guides/required-field-validation",
+              "react-native/guides/populating-and-extracting-data",
+              "react-native/guides/schema-validation",
+              "react-native/guides/event-handling"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "react-native/api-reference/overview",
+              "react-native/api-reference/functions",
+              "react-native/api-reference/classes"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "react-native/changelogs/releases",
+              "react-native/about/security"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Web SDK",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "web/introduction",
+              "web/getting-started/installation",
+              "web/getting-started/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "web/guides/modes",
+              "web/guides/image-upload-handling",
+              "web/guides/required-field-validation",
+              "web/guides/populating-and-extracting-data",
+              "web/guides/schema-validation",
+              "web/guides/event-handling"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "web/api-reference/overview",
+              "web/api-reference/functions",
+              "web/api-reference/classes"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "web/changelogs/releases",
+              "web/about/security"
             ]
           }
         ]
@@ -71,14 +170,19 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Website",
+          "href": "https://joyfill.io",
+          "icon": "globe"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "GitHub",
+          "href": "https://github.com/joyfill",
+          "icon": "github"
+        },
+        {
+          "anchor": "Support",
+          "href": "https://joyfill.io/support",
+          "icon": "life-ring"
         }
       ]
     }
@@ -90,33 +194,29 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "API Docs",
+        "href": "https://docs.joyfill.io/api"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "label": "Get Started",
+      "href": "https://joyfill.io/signup"
     }
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "cursor"
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "github": "https://github.com/joyfill",
+      "linkedin": "https://linkedin.com/company/joyfill"
     }
   }
 }

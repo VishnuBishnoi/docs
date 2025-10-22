@@ -1,0 +1,142 @@
+---
+title: "Release Notes"
+description: "Version history and changelog for the Kotlin SDK"
+icon: "newspaper"
+---
+
+# Release Notes
+
+Stay up to date with the latest features, improvements, and bug fixes in the Joyfill Kotlin SDK.
+
+## Version 1.2.0 (Latest)
+
+**Release Date:** January 15, 2025
+
+### ✨ New Features
+- Added support for signature fields with touch-based signing
+- Introduced offline form caching for improved performance
+- New `JoyfillTheme` system for comprehensive UI customization
+- Added batch field value updates for better performance
+
+### 🔧 Improvements
+- Enhanced image upload performance with concurrent uploads
+- Improved form validation with better error messages
+- Optimized memory usage for large forms
+- Better accessibility support with VoiceOver improvements
+
+### 🐛 Bug Fixes
+- Fixed date picker display issue on Android 17
+- Resolved memory leak in form view controller
+- Fixed keyboard dismissal on submit
+- Corrected text field alignment in RTL languages
+
+### 📝 Documentation
+- Added comprehensive guide for offline support
+- Updated API reference with new theme system
+- New examples for custom validators
+
+---
+
+## Version 1.1.0
+
+**Release Date:** December 1, 2024
+
+### ✨ New Features
+- Multi-language support with localization
+- Custom validation rules API
+- Real-time collaboration support
+- Form templates library
+
+### 🔧 Improvements
+- Faster form loading times
+- Better error handling
+- Enhanced TypeScript definitions
+- Improved dark mode support
+
+### 🐛 Bug Fixes
+- Fixed dropdown menu positioning
+- Resolved text input cursor issues
+- Fixed image rotation on upload
+- Corrected date format parsing
+
+---
+
+## Version 1.0.0
+
+**Release Date:** October 15, 2024
+
+### 🎉 Initial Release
+
+- Complete form rendering engine
+- Support for all standard field types
+- Three form modes: readonly, fill, and edit
+- Comprehensive event system
+- Image upload and handling
+- Field validation
+- Custom styling support
+- Delegate-based architecture
+- Kotlin Package Manager support
+- CocoaPods support
+
+---
+
+## Migration Guides
+
+### Migrating from 1.1.x to 1.2.x
+
+The 1.2.0 release includes some breaking changes. Here's what you need to update:
+
+<Steps>
+  <Step title="Update Dependencies">
+    Update your Package.swift or Podfile to version 1.2.0
+    ```swift
+    .package(url: "https://github.com/joyfill/joyfill-ios", from: "1.2.0")
+    ```
+  </Step>
+  
+  <Step title="Update Theme Configuration">
+    Replace `JoyfillAppearance` with new `JoyfillTheme`:
+    ```swift
+    // Old way
+    let appearance = JoyfillAppearance()
+    appearance.primaryColor = .blue
+    formView.appearance = appearance
+    
+    // New way
+    let theme = JoyfillTheme()
+    theme.colors.primary = .blue
+    formView.theme = theme
+    ```
+  </Step>
+  
+  <Step title="Update Delegate Methods">
+    Some delegate methods have new signatures:
+    ```swift
+    // Old
+    func formDidSubmit(_ form: JoyfillForm, data: [String: Any])
+    
+    // New
+    func formDidSubmit(_ form: JoyfillForm, result: JoyfillSubmitResult)
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+  Version 1.2.0 requires Android 13.0 or later. If you need to support Android 12, please continue using version 1.1.x.
+</Warning>
+
+## Deprecation Notices
+
+### Version 1.2.0
+- `JoyfillAppearance` - Use `JoyfillTheme` instead
+- `formView.customColors` - Use `formView.theme.colors` instead
+
+These deprecated APIs will be removed in version 2.0.0.
+
+## Getting Support
+
+If you encounter any issues:
+- Check our [GitHub Issues](https://github.com/joyfill/joyfill-ios/issues)
+- Visit [Support Center](https://joyfill.io/support)
+- Email us at support@joyfill.io
+

@@ -1,0 +1,168 @@
+---
+title: "Functions Reference"
+description: "Detailed documentation for all SDK functions"
+icon: "function"
+---
+
+# Functions Reference
+
+Complete reference for all functions and methods in the Joyfill iOS SDK.
+
+## Form Loading
+
+### loadForm(config:)
+
+Loads a form with the specified configuration.
+
+```swift
+func loadForm(config: JoyfillFormConfig)
+```
+
+**Parameters:**
+- `config`: `JoyfillFormConfig` - The form configuration
+
+**Example:**
+```swift
+let config = JoyfillFormConfig(
+    mode: .fill,
+    templateId: "template_123"
+)
+formView.loadForm(config: config)
+```
+
+## Data Management
+
+### getFormData()
+
+Returns all form data as a dictionary.
+
+```swift
+func getFormData() -> [String: Any]
+```
+
+**Returns:** Dictionary containing all form field values
+
+**Example:**
+```swift
+let data = formView.getFormData()
+print(data)
+```
+
+### setFieldValue(_:forField:)
+
+Sets the value for a specific field.
+
+```swift
+func setFieldValue(_ value: Any, forField fieldId: String)
+```
+
+**Parameters:**
+- `value`: `Any` - The value to set
+- `fieldId`: `String` - The field identifier
+
+**Example:**
+```swift
+formView.setFieldValue("John", forField: "first_name")
+```
+
+### getFieldValue(_:)
+
+Retrieves the value of a specific field.
+
+```swift
+func getFieldValue(_ fieldId: String) -> Any?
+```
+
+**Parameters:**
+- `fieldId`: `String` - The field identifier
+
+**Returns:** The field value, or `nil` if not found
+
+**Example:**
+```swift
+if let name = formView.getFieldValue("first_name") as? String {
+    print(name)
+}
+```
+
+## Validation
+
+### validate()
+
+Validates all form fields.
+
+```swift
+func validate() -> Bool
+```
+
+**Returns:** `true` if all fields are valid, `false` otherwise
+
+**Example:**
+```swift
+if formView.validate() {
+    print("Form is valid")
+} else {
+    print("Form has errors")
+}
+```
+
+### validateField(_:)
+
+Validates a specific field.
+
+```swift
+func validateField(_ fieldId: String) -> Bool
+```
+
+**Parameters:**
+- `fieldId`: `String` - The field identifier
+
+**Returns:** `true` if the field is valid
+
+**Example:**
+```swift
+if formView.validateField("email") {
+    print("Email is valid")
+}
+```
+
+## Mode Control
+
+### setMode(_:)
+
+Changes the form mode.
+
+```swift
+func setMode(_ mode: JoyfillFormMode)
+```
+
+**Parameters:**
+- `mode`: `JoyfillFormMode` - The new mode (readonly, fill, or edit)
+
+**Example:**
+```swift
+formView.setMode(.readonly)
+```
+
+## Configuration
+
+### configure(accessToken:)
+
+Configures the SDK with your access token.
+
+```swift
+static func configure(accessToken: String)
+```
+
+**Parameters:**
+- `accessToken`: `String` - Your Joyfill access token
+
+**Example:**
+```swift
+Joyfill.configure(accessToken: "your_token_here")
+```
+
+<Note>
+  Call `configure(accessToken:)` once during app initialization, typically in `AppDelegate`.
+</Note>
+
