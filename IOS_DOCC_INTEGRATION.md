@@ -105,9 +105,11 @@ If you have Mintlify connected to your GitHub repo:
 
 ## 🔄 Updating DocC Documentation
 
+**IMPORTANT:** You MUST regenerate DocC with the `--hosting-base-path sdk/ios` flag! This is not optional.
+
 When you regenerate DocC from your iOS SDK:
 
-1. **Generate with correct base path:**
+1. **Generate with correct base path (REQUIRED):**
    ```bash
    swift package \
      --allow-writing-to-directory ./docs \
@@ -117,6 +119,11 @@ When you regenerate DocC from your iOS SDK:
      --hosting-base-path sdk/ios \
      --output-path ./docs/sdk/ios
    ```
+
+   **Why this flag is critical:**
+   - Without `--hosting-base-path sdk/ios`, DocC generates absolute paths like `/Joyfill/js/chunk-vendors.js`
+   - With the flag, DocC generates correct paths like `/sdk/ios/Joyfill/js/chunk-vendors.js`
+   - This ensures all CSS, JS, images, and internal links work correctly when hosted under `/sdk/ios/`
 
 2. **Replace files in Mintlify repo:**
    ```bash
